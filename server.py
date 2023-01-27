@@ -32,9 +32,11 @@ def home():
         return render_template('index.html')
     return render_template('index.html')
 
-@app.route('/db/<From>/<To>')
-
-def getData(From, To):
+@app.route('/db', methods=['POST', 'GET'])
+def getData():
+    if request.method=='POST':
+        From= request.form['from']
+        To= request.form['to']
     # params = request.get_json()
     # print()
     # print(params)
