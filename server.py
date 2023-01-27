@@ -32,14 +32,14 @@ def home():
         return render_template('index.html')
     return render_template('index.html')
 
-@app.route('/db')
+@app.route('/db/<From>/<To>')
 
-def getData():
-    params = request.get_json()
+def getData(From, To):
+    # params = request.get_json()
     # print()
     # print(params)
     # print()
-    From, To = params['From'].strip(), params['To'].strip()
+    # From, To = params['From'].strip(), params['To'].strip()
     output = io.BytesIO()
     workbook = xlwt.Workbook()
     toiletSh = workbook.add_sheet('toilet feedbacks')

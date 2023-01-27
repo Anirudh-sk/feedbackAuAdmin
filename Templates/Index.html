@@ -30,13 +30,14 @@
         >
           To :
         </p>
-        <input type="date" class="" style="position: absolute; right: 400px" />
-        <input type="date" class=" " style="position: absolute; right: 200px" />
+        <input type="date" class="" id = "From" style="position: absolute; right: 400px" />
+        <input type="date" class="" id = "To" style="position: absolute; right: 200px" />
         <button class="btn btn-primary">
           <a
             style="text-decoration: none; color: aliceblue"
             id="a2"
-            href="{{ url_for('.getData') }}"
+            href= ""
+            onclick = getHref()
             >Download CSV
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -98,6 +99,30 @@
     <br />
   </body>
   <script>
+    Date.prototype.toMyString = function () {
+   //If month/day is single digit value add perfix as 0
+    function AddZero(obj) {
+          obj = obj + '';
+          if (obj.length == 1)
+              obj = "0" + obj
+          return obj;
+    }
+
+    var output = "";
+    output += this.getFullYear();
+    output += AddZero(this.getMonth()+1);
+    output += AddZero(this.getDate());
+
+    return output; 
+}
+    function getHref()
+    {
+      // console.log(document.getElementById("From").value)
+      // console.log(document.getElementById("To").value)
+      
+      document.getElementById("a2").href = "{{ url_for('.getData', From='\
+      " +new Date(document.getElementById("From").value).toMyString()+ "', To='"+new Date(document.getElementById("To").value).toMyString()+"') }}";
+    }
     // let formData = new FormData([form]);
 
     // formElem.onsubmit = async (e) => {
