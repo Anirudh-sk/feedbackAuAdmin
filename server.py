@@ -33,6 +33,9 @@ def home():
     #         return render_template('index.html')
     return render_template('index.html')
 
+def reverseDate(a):
+    date, month, year = a.split('-')
+    return "-".join([year,month,date])
 
 @app.route('/', methods=['POST', 'GET'])
 def getData():
@@ -46,22 +49,22 @@ def getData():
         output = io.BytesIO()
         workbook = xlwt.Workbook()
         toiletSh = workbook.add_sheet('toilet feedbacks')
-        foodSh = workbook.add_sheet('foood feedbacks')
+        foodSh = workbook.add_sheet('food feedbacks')
         securitySh = workbook.add_sheet('security feedbacks')
         buildingSh = workbook.add_sheet('building feedbacks')
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute("SELECT * from basicInfo INNER JOIN toiletForm on toiletForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
-            ", str(From), " AND basicInfo.SubmitTime <=", str(To))
+        cur.execute("SELECT * from basicInfo INNER JOIN toiletForm on toiletForm.id = basicInfo.id WHERE basicInfo.SubmitTime between \
+            '{0}' and '{1}'".format(reverseDate(From), reverseDate(To)))
         toiletF = cur.fetchall()
-        cur.execute("SELECT * from basicInfo INNER JOIN foodForm on foodForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
-            ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
+        cur.execute("SELECT * from basicInfo INNER JOIN foodForm on foodForm.id = basicInfo.id WHERE basicInfo.SubmitTime between \
+            '{0}' and '{1}'".format(reverseDate(From), reverseDate(To)))
         foodF = cur.fetchall()
-        cur.execute("SELECT * from basicInfo INNER JOIN securityForm on securityForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
-            ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
+        cur.execute("SELECT * from basicInfo INNER JOIN securityForm on securityForm.id = basicInfo.id WHERE basicInfo.SubmitTime between \
+            '{0}' and '{1}'".format(reverseDate(From), reverseDate(To)))
 
         securityF = cur.fetchall()
-        cur.execute("SELECT * from basicInfo INNER JOIN buildingForm on buildingForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
-            ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
+        cur.execute("SELECT * from basicInfo INNER JOIN buildingForm on buildingForm.id = basicInfo.id WHERE basicInfo.SubmitTime between \
+            '{0}' and '{1}'".format(reverseDate(From), reverseDate(To)))
 
         buildingF = cur.fetchall()
 
@@ -86,12 +89,12 @@ def getData():
             toiletSh.write(idx+1, 3, row[3])
             toiletSh.write(idx+1, 4, row[4])
             toiletSh.write(idx+1, 5, row[5])
-            toiletSh.write(idx+1, 6, row[7])
-            toiletSh.write(idx+1, 7, row[8])
-            toiletSh.write(idx+1, 8, row[9])
-            toiletSh.write(idx+1, 9, row[10])
-            toiletSh.write(idx+1, 10, row[11])
-            toiletSh.write(idx+1, 11, row[12])
+            toiletSh.write(idx+1, 6, row[8])
+            toiletSh.write(idx+1, 7, row[9])
+            toiletSh.write(idx+1, 8, row[10])
+            toiletSh.write(idx+1, 9, row[11])
+            toiletSh.write(idx+1, 10, row[12])
+            toiletSh.write(idx+1, 11, row[13])
             # toiletSh.write(idx+1, 4, row['Phone'])
             idx += 1
 
@@ -116,12 +119,12 @@ def getData():
             foodSh.write(idx+1, 3, row[3])
             foodSh.write(idx+1, 4, row[4])
             foodSh.write(idx+1, 5, row[5])
-            foodSh.write(idx+1, 6, row[7])
-            foodSh.write(idx+1, 7, row[8])
-            foodSh.write(idx+1, 8, row[9])
-            foodSh.write(idx+1, 9, row[10])
-            foodSh.write(idx+1, 10, row[11])
-            foodSh.write(idx+1, 11, row[12])
+            foodSh.write(idx+1, 6, row[8])
+            foodSh.write(idx+1, 7, row[9])
+            foodSh.write(idx+1, 8, row[10])
+            foodSh.write(idx+1, 9, row[11])
+            foodSh.write(idx+1, 10, row[12])
+            foodSh.write(idx+1, 11, row[13])
             idx += 1
 
         securitySh.write(0, 0, 'Id')
@@ -143,10 +146,10 @@ def getData():
             securitySh.write(idx+1, 3, row[3])
             securitySh.write(idx+1, 4, row[4])
             securitySh.write(idx+1, 5, row[5])
-            securitySh.write(idx+1, 6, row[7])
-            securitySh.write(idx+1, 7, row[8])
-            securitySh.write(idx+1, 8, row[9])
-            securitySh.write(idx+1, 9, row[10])
+            securitySh.write(idx+1, 6, row[8])
+            securitySh.write(idx+1, 7, row[9])
+            securitySh.write(idx+1, 8, row[10])
+            securitySh.write(idx+1, 9, row[11])
             idx += 1
 
         buildingSh.write(0, 0, 'Id')
@@ -167,8 +170,8 @@ def getData():
             buildingSh.write(idx+1, 3, row[3])
             buildingSh.write(idx+1, 4, row[4])
             buildingSh.write(idx+1, 5, row[5])
-            buildingSh.write(idx+1, 6, row[7])
-            buildingSh.write(idx+1, 7, row[8])
+            buildingSh.write(idx+1, 6, row[8])
+            buildingSh.write(idx+1, 7, row[9])
             idx += 1
 
         workbook.save(output)
