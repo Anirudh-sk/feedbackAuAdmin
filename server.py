@@ -33,6 +33,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/db')
+
 def getData():
     params = request.get_json()
     # print()
@@ -155,6 +156,7 @@ def getData():
     buildingSh.write(0, 7, 'Feedback')
 
     idx = 0
+    
     for row in buildingF:
         buildingSh.write(idx+1, 0, str(row[0]))
         buildingSh.write(idx+1, 1, str(row[1]))
