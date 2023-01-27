@@ -34,6 +34,11 @@ def home():
 
 @app.route('/db')
 def getData():
+    params = request.get_json()
+    # print()
+    # print(params)
+    # print()
+    From, To = params['From'].strip(), params['To'].strip()
     output = io.BytesIO()
     workbook = xlwt.Workbook()
     toiletSh = workbook.add_sheet('toilet feedbacks')
@@ -41,13 +46,19 @@ def getData():
     securitySh = workbook.add_sheet('security feedbacks')
     buildingSh = workbook.add_sheet('building feedbacks')
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cur.execute("SELECT * from basicInfo INNER JOIN toiletForm on toiletForm.id = basicInfo.id")
+    cur.execute("SELECT * from basicInfo INNER JOIN toiletForm on toiletForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
+        ", str(From), " AND basicInfo.SubmitTime <=", str(To))
     toiletF = cur.fetchall()
-    cur.execute("SELECT * from basicInfo INNER JOIN foodForm on foodForm.id = basicInfo.id")
+    cur.execute("SELECT * from basicInfo INNER JOIN foodForm on foodForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
+        ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
     foodF = cur.fetchall()
-    cur.execute("SELECT * from basicInfo INNER JOIN securityForm on securityForm.id = basicInfo.id")
+    cur.execute("SELECT * from basicInfo INNER JOIN securityForm on securityForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
+        ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
+
     securityF = cur.fetchall()
-    cur.execute("SELECT * from basicInfo INNER JOIN buildingForm on buildingForm.id = basicInfo.id")
+    cur.execute("SELECT * from basicInfo INNER JOIN buildingForm on buildingForm.id = basicInfo.id WHERE basicInfo.SubmitTime >= \
+        ", str(From), " AND basicInfo.SubmitTime <= ", str(To))
+
     buildingF = cur.fetchall()
 
     toiletSh.write(0, 0, 'Id')
