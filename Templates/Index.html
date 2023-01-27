@@ -24,21 +24,15 @@
         <a class="navbar-brand" href="#"> AU Feedback Admin </a>
         <form method="POST">
 
-          <p style="position: absolute; right: 560px; top: 15px; color: white">
-            From :
-          </p>
-          <p
-          style="position: absolute; right: 360px; top: 15px; color: aliceblue"
-          >
-          To :
-        </p>
-        <input name="from" type="date" class="" id = "From" style="position: absolute; right: 400px" />
-        <input name = "to" type="date" class="" id = "To" style="position: absolute; right: 200px" />
-        <button type="submit" class="btn btn-primary">
+          <input name="From" type="date"  id = "From"  /> 
+          <input name = "To" type="date"  id = "To" />
+          <button class="btn btn-primary" type="submit">Set Date</button>
+        </form>
+          <button  class="btn btn-primary">
           <a
           style="text-decoration: none; color: aliceblue"
           id="a2"
-          href= ""
+          href = ""
           >Download CSV
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +48,6 @@
           </svg>
         </a>
       </button>
-    </form>
       </div>
     </nav>
 
@@ -119,11 +112,15 @@
 }
     function getHref()
     {
-      // console.log(document.getElementById("From").value)
-      // console.log(document.getElementById("To").value)
+      let From = document.getElementById("From").value.toString()
+      let To = document.getElementById("To").value.toString()
+
+      window.localStorage.setItem('From', From)
+      window.localStorage.setItem('To', To)
+    
+      // console.log(From, To);
       
-      document.getElementById("a2").href = "{{ url_for('.getData', From='\
-      " +new Date(document.getElementById("From").value).toMyString()+ "', To='"+new Date(document.getElementById("To").value).toMyString()+"') }}";
+      // document.getElementById("a2").href = `{ url_for('.getData',From=${window.localStorage.getItem('From')}, To=${window.localStorage.getItem('To')}) }`;
     }
     // let formData = new FormData([form]);
 
