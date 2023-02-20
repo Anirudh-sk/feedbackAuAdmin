@@ -70,6 +70,7 @@
         <select
           required
           class="form-select"
+          id="select"
           aria-label="Default select example"
         >
           <option value="" selected>building</option>
@@ -149,6 +150,8 @@
     // };
     function createQR() {
       document.getElementById("qrcode").innerHTML = "";
+      var select = document.getElementById("select").value;
+
       var building = document.getElementById("building").value;
       // document.getElementById("building").value = "";
       var floor = document.getElementById("floor").value;
@@ -157,7 +160,7 @@
       // document.getElementById("toilet").value = "";
       var qrc = new QRCode(
         document.getElementById("qrcode"),
-        "https://annauniv.com/?building=" +
+        "http://192.168.220.125:3000"+select+"/?building=" +
           building +
           "&floor=" +
           floor +

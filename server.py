@@ -12,7 +12,7 @@ import psycopg2.extras
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 user = 'postgres'
-password = 'Jivi1122'
+password = 'admin'
 host = '127.0.0.1'
 port = 5432
 database = 'testdb'
@@ -35,16 +35,22 @@ def home():
 
 def reverseDate(a):
     date, month, year = a.split('-')
-    return "-".join([year,month,date])
+    print("")
+    print(a, year)
+    print("")
+    if len(year)==4:
+        return "-".join([year,month,date])
+    return a
+        
 
 @app.route('/', methods=['POST', 'GET'])
 def getData():
     if request.method == 'POST':
         From = request.form['From']
         To = request.form['To']
-        print("\n")
-        print(From, To)
-        print("\n")
+        # print("\n")
+        # print(From, To)
+        # print("\n")
 
         output = io.BytesIO()
         workbook = xlwt.Workbook()
